@@ -1,5 +1,6 @@
 pragma solidity ^0.5.0;
 
+// TODO: SafeMath
 contract CharityDao {
     address public owner;
     address public exchange;
@@ -25,7 +26,7 @@ contract CharityDao {
     mapping(address => uint) public points;
 
     mapping(uint => mapping(address => uint)) public indexOfVotesPerRound;
-    mapping(uint => uint[]) public votesPerRound;
+    mapping(uint => address[]) public charitiesInARound;
 
     modifier onlyExchange {
         require(msg.sender == exchange, "Must be exchange contract");
@@ -48,14 +49,25 @@ contract CharityDao {
         Charity memory selectedCharity = charities[_pos];
 
         require(selectedCharity.state == CharityState.APPROVED);
+        // TODO: check contract state
 
+        address charityAddr = selectedCharity.charityAccount;
+        uint usersVotingPower = points[msg.sender];
 
+        indexOfVotesPerRound[currRound][charityAddr] += usersVotingPower;
+
+        // first vote for the charity in this round
+        if(indexOfVotesPerRound[currRound][charityAddr] == 0) {
+            charitiesInARound[currRound].push(selectedCharity.charityAccount);
+        }
+
+        points[msg.sender] = 0;
     }
 
     function payToCharity() public {
         // is in Good state
         // convert moneyz
-        // get the winner
+        // get the winner //TODO: potential DoS
         // payout
     }
 
@@ -88,4 +100,17 @@ contract CharityDao {
 
         blockedCharity.state = CharityState.BLACKLISTED;
     }
+
+    // Internal
+    function convertKnc() internal {
+
+    }
+
+    // function getWinner() internal returns (address) {
+    //     uint mostVotes = charitiesInARound[0];
+
+    //     for(uint i = 1; i < charitiesInARound[currRound].length; ++i) {
+    //         charitiesInARound[i]
+    //     }
+    // }
 }
