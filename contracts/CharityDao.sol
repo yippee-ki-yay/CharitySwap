@@ -8,7 +8,8 @@ contract CharityDao {
 
     address constant KYBER_INTERFACE = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755;
     address constant ETHER_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
-    address constant KNC_ADDRESS = 0xdd974d5c2e2928dea5f71b9825b8b646686bd200;
+    address constant KNC_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
+    address constant GIVETH_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
 
     address public owner;
     address public exchange;
@@ -74,13 +75,19 @@ contract CharityDao {
 
     function payToCharity() public {
         // is in Good state
-        // convert moneyz
-        // get the winner //TODO: potential DoS
-        // payout
+
+        convertKnc();
+        
+        address charityAddr = getWinner();
+        address payable payableCharity = address(uint160(charityAddr));
+
+        payableCharity.transfer(address(this).balance);
+        // reset state
     }
 
     function addCharity(address _charityAccount, string memory _name, string  memory _desc) public {
         require(!charityExists[_charityAccount], "Must be a unqie charity address");
+        require(_charityAccount != address(0));
 
         charities.push(Charity({
             submiter: msg.sender,
@@ -103,7 +110,6 @@ contract CharityDao {
 
     function blacklistCharity(uint _pos) public onlyOwner {
         Charity storage blockedCharity = charities[_pos];
-
         require(blockedCharity.state == CharityState.UNDER_REVIEW);
 
         blockedCharity.state = CharityState.BLACKLISTED;
@@ -125,11 +131,11 @@ contract CharityDao {
 
         token.approve(address(_kyberNetworkProxy), kncAmount);
 
-        uint destAmount = _kyberNetworkProxy.trade(
+        _kyberNetworkProxy.trade(
             token,
             kncAmount,
             ethToken,
-            msg.sender,
+            address(this),
             uint(-1),
             minRate,
             address(this)
@@ -137,11 +143,27 @@ contract CharityDao {
 
     }
 
-    // function getWinner() internal returns (address) {
-    //     uint mostVotes = charitiesInARound[0];
+    function getWinner() internal view returns (address) {
+        uint numCharities = charitiesInARound[currRound].length;
 
-    //     for(uint i = 1; i < charitiesInARound[currRound].length; ++i) {
-    //         charitiesInARound[i]
-    //     }
-    // }
+        if (numCharities == 0) { return GIVETH_ADDRESS; }
+
+        address biggestCharity = charitiesInARound[currRound][0];
+
+        if (numCharities == 1) { return biggestCharity; }
+
+        uint biggestVote = indexOfVotesPerRound[currRound][biggestCharity];
+
+        for(uint i = 1; i < charitiesInARound[currRound].length; ++i) {
+            address currCharity = charitiesInARound[currRound][i];
+            uint currVote = indexOfVotesPerRound[currRound][currCharity];
+
+            if (biggestVote < currVote) {
+                biggestVote = currVote;
+                biggestCharity = currCharity;
+            }
+        }
+
+        return biggestCharity;
+    }
 }
