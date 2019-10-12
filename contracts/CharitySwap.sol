@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 
 import "./helpers/ERC20.sol";
 import "./helpers/KyberNetworkProxyInterface.sol";
+import "./CharityDao.sol";
 
 contract CharitySwap {
 
@@ -13,10 +14,10 @@ contract CharitySwap {
     // address constant KYBER_INTERFACE = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755;
     // address constant ETHER_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
     
-    address public charityDao;
+    CharityDao public charityDao;
     
     constructor(address _charityDao) public {
-        charityDao = _charityDao;
+        charityDao = CharityDao(_charityDao);
     }
     
     event Swap(address indexed _user, address _srcToken, address _destToken, uint _amount);
@@ -53,13 +54,18 @@ contract CharitySwap {
             msg.sender,
             uint(-1),
             minRate,
-            charityDao
+            address(charityDao)
         );
 
         if (_dstAddress == ETHER_ADDRESS) {
             msg.sender.transfer(destAmount);
+            charityDao.addPoints(msg.sender, destAmount);
         } else {
+            uint expectedRate;
+            (expectedRate, ) = _kyberNetworkProxy.getExpectedRate(srcToken, ERC20(ETHER_ADDRESS), _amount);
             dstToken.transfer(msg.sender, destAmount);
+
+            charityDao.addPoints(msg.sender, destAmount * expectedRate); //TODO: check this
         }
     }
 

@@ -58,9 +58,8 @@ contract CharityDao {
         _;
     }
     
-    constructor(address _exchange) public {
+    constructor() public {
         owner = msg.sender;
-        exchange = _exchange;
 
         startOfRoundTimestamp = now;
     }
@@ -127,6 +126,11 @@ contract CharityDao {
         require(blockedCharity.state == CharityState.UNDER_REVIEW);
 
         blockedCharity.state = CharityState.BLACKLISTED;
+    }
+
+    function setExchange(address _exchange) public onlyOwner {
+        require(_exchange == address(0));
+        exchange = _exchange;
     }
 
     // TODO: double check this

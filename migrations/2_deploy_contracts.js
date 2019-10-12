@@ -1,5 +1,6 @@
 const CharitySwap = artifacts.require("CharitySwap");
+const CharityDao = artifacts.require("CharityDao");
 
-module.exports = function(deployer) {
+module.exports = (deployer) => {
   deployer.deploy(CharitySwap, "");
 };
