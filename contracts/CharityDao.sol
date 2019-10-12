@@ -6,13 +6,20 @@ import "./helpers/KyberNetworkProxyInterface.sol";
 // TODO: SafeMath
 contract CharityDao {
 
-    address constant KYBER_INTERFACE = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755;
-    address constant ETHER_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
-    address constant KNC_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
-    address constant GIVETH_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
+    // address constant KYBER_INTERFACE = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755;
+    // address constant ETHER_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
+    // address constant KNC_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
+    // address constant GIVETH_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
 
-    uint constant ACTIVE_PERIOD = 30 days;
-    uint constant VOTING_PERIOD = 5 days;
+    // Kovan
+    address constant KYBER_INTERFACE = 0x692f391bCc85cefCe8C237C01e1f636BbD70EA4D;
+    address constant ETHER_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
+    address constant KNC_ADDRESS = 0xad67cB4d63C9da94AcA37fDF2761AaDF780ff4a2;
+    address constant GIVETH_ADDRESS = 0x93cdB0a93Fc36f6a53ED21eCf6305Ab80D06becA;
+
+    // TODO: switch to days when not testing
+    uint constant ACTIVE_PERIOD = 30 minutes;
+    uint constant VOTING_PERIOD = 5 minutes;
 
     address public owner;
     address public exchange;
