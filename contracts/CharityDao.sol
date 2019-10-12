@@ -1,7 +1,15 @@
 pragma solidity ^0.5.0;
 
+import "./helpers/ERC20.sol";
+import "./helpers/KyberNetworkProxyInterface.sol";
+
 // TODO: SafeMath
 contract CharityDao {
+
+    address constant KYBER_INTERFACE = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755;
+    address constant ETHER_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
+    address constant KNC_ADDRESS = 0xdd974d5c2e2928dea5f71b9825b8b646686bd200;
+
     address public owner;
     address public exchange;
 
@@ -103,6 +111,29 @@ contract CharityDao {
 
     // Internal
     function convertKnc() internal {
+        uint minRate;
+        ERC20 ethToken = ERC20(ETHER_ADDRESS);
+        ERC20 token = ERC20(KNC_ADDRESS);
+
+        uint kncAmount = ERC20(KNC_ADDRESS).balanceOf(address(this));
+        
+        KyberNetworkProxyInterface _kyberNetworkProxy = KyberNetworkProxyInterface(KYBER_INTERFACE);
+        
+        (, minRate) = _kyberNetworkProxy.getExpectedRate(token, ethToken, kncAmount);
+
+        require(token.approve(address(_kyberNetworkProxy), 0));
+
+        token.approve(address(_kyberNetworkProxy), kncAmount);
+
+        uint destAmount = _kyberNetworkProxy.trade(
+            token,
+            kncAmount,
+            ethToken,
+            msg.sender,
+            uint(-1),
+            minRate,
+            address(this)
+        );
 
     }
 
