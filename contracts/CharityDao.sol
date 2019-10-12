@@ -11,6 +11,9 @@ contract CharityDao {
     address constant KNC_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
     address constant GIVETH_ADDRESS = 0xdd974D5C2e2928deA5F71b9825b8b646686BD200;
 
+    uint constant ACTIVE_PERIOD = 30 days;
+    uint constant VOTING_PERIOD = 5 days;
+
     address public owner;
     address public exchange;
 
@@ -28,6 +31,7 @@ contract CharityDao {
     }
 
     uint public currRound;
+    uint public startOfRoundTimestamp;
 
     Charity[] public charities;
     mapping(address => bool) public charityExists;
@@ -50,6 +54,8 @@ contract CharityDao {
     constructor(address _exchange) public {
         owner = msg.sender;
         exchange = _exchange;
+
+        startOfRoundTimestamp = now;
     }
 
     // Public methods
@@ -58,7 +64,7 @@ contract CharityDao {
         Charity memory selectedCharity = charities[_pos];
 
         require(selectedCharity.state == CharityState.APPROVED);
-        // TODO: check contract state
+        require(getCurrentState() == ContractState.VOTING);
 
         address charityAddr = selectedCharity.charityAccount;
         uint usersVotingPower = points[msg.sender];
@@ -74,15 +80,16 @@ contract CharityDao {
     }
 
     function payToCharity() public {
-        // is in Good state
+        require(getCurrentState() == ContractState.PAYOUT);
 
-        convertKnc();
-        
-        address charityAddr = getWinner();
+        _convertKnc();
+
+        address charityAddr = _getWinner();
         address payable payableCharity = address(uint160(charityAddr));
 
         payableCharity.transfer(address(this).balance);
-        // reset state
+
+        _newRound();
     }
 
     function addCharity(address _charityAccount, string memory _name, string  memory _desc) public {
@@ -115,8 +122,26 @@ contract CharityDao {
         blockedCharity.state = CharityState.BLACKLISTED;
     }
 
+    // TODO: double check this
+    function getCurrentState() public view returns (ContractState) {
+        uint endOfActivePeriod = startOfRoundTimestamp + ACTIVE_PERIOD;
+        uint endOfVotingPeriod = endOfActivePeriod + VOTING_PERIOD;
+
+        if (now > startOfRoundTimestamp && now < endOfActivePeriod) {
+            return ContractState.ACTIVE;
+        }
+
+        if (now > endOfActivePeriod && now < endOfVotingPeriod) {
+            return ContractState.VOTING;
+        }
+
+        if (now > endOfVotingPeriod) {
+            return ContractState.PAYOUT;
+        }
+    }
+
     // Internal
-    function convertKnc() internal {
+    function _convertKnc() internal {
         uint minRate;
         ERC20 ethToken = ERC20(ETHER_ADDRESS);
         ERC20 token = ERC20(KNC_ADDRESS);
@@ -143,7 +168,7 @@ contract CharityDao {
 
     }
 
-    function getWinner() internal view returns (address) {
+    function _getWinner() internal view returns (address) {
         uint numCharities = charitiesInARound[currRound].length;
 
         if (numCharities == 0) { return GIVETH_ADDRESS; }
@@ -165,5 +190,10 @@ contract CharityDao {
         }
 
         return biggestCharity;
+    }
+
+    function _newRound() internal {
+        currRound++;
+        startOfRoundTimestamp = now;
     }
 }
