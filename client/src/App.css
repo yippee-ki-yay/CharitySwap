@@ -1,0 +1,16 @@
+.main-container {
+  margin-top: 50px;
+}
+
+.text-small {
+  font-size: 15px;
+}
+
+.info-item {
+  margin-right: 25px;
+  font-size: 25px;
+}
+
+.bad-row {
+  color: red;
+}
