@@ -6,6 +6,10 @@ import './css/style.css';
 
 import "./App.css";
 
+import { getDaoStatus } from "./services/daoService.js";
+
+import { CharityDao, CharitySwap } from './utils/config.json';
+
 class App extends Component {
   
   constructor(man) {
@@ -14,6 +18,8 @@ class App extends Component {
     this.state = {
       account: null,
       web3: null,
+      charitySwap: null,
+      charityDao: null
     }
   }
 
@@ -26,12 +32,17 @@ class App extends Component {
 
       const networkId = await web3.eth.net.getId();
   
-      // const pip = new web3.eth.Contract(PipInterface.abi, PipInterface.networks[networkId].address);
+      const charitySwap = new web3.eth.Contract(CharitySwap.abi, CharitySwap.networks[networkId].address);
+      const charityDao = new web3.eth.Contract(CharityDao.abi, CharityDao.networks[networkId].address);
+
+      const res = await getDaoStatus(charityDao);
 
       this.setState({
         web3,
         account: accounts[0],
         networkId,
+        charityDao,
+        charitySwap
        }, this.fetchEvents);
 
     } catch (error) {
@@ -93,7 +104,7 @@ class App extends Component {
                         <div className="row">
                           <div className='col-lg-8'>
                             <div className="form-group">
-                                <input type="text" class="form-control input-flat" placeholder="Input Flat " />
+                                <input type="text" className="form-control input-flat" placeholder="Input Flat " />
                             </div>
                           </div>
                         </div>
@@ -103,7 +114,7 @@ class App extends Component {
                         </div>
 
                         <div className="row">
-                          <button type="button" class="btn btn-primary btn-lg">Swap</button>
+                          <button type="button" className="btn btn-primary btn-lg">Swap</button>
                         </div>
 
                         </div>
