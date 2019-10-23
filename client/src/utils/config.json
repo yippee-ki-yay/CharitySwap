@@ -1,0 +1,25 @@
+{
+    "CharitySwap": {
+        "abi": [{"constant":true,"inputs":[],"name":"charityDao","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_charityDao","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_user","type":"address"},{"indexed":false,"name":"_srcToken","type":"address"},{"indexed":false,"name":"_destToken","type":"address"},{"indexed":false,"name":"_amount","type":"uint256"}],"name":"Swap","type":"event"},{"constant":false,"inputs":[{"name":"_srcToken","type":"address"},{"name":"_destToken","type":"address"},{"name":"_amount","type":"uint256"}],"name":"swap","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"_src","type":"address"},{"name":"_dest","type":"address"},{"name":"_srcQty","type":"uint256"}],"name":"getExpectedRate","outputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"}],
+          "42": {
+            "createdBlock": 0,
+            "address": "0x1429E3A785c260EC6e040Bb72F7a5D861a65c586"
+          },
+          "1": {
+            "createdBlock": 0,
+            "address": "0x1429E3A785c260EC6e040Bb72F7a5D861a65c586"
+          }
+    },
+    "CharityDao": {
+        "abi": [{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"points","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"startOfRoundTimestamp","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"currRound","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"address"}],"name":"indexOfVotesPerRound","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"charityExists","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"exchange","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"charitiesInARound","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"charities","outputs":[{"name":"submiter","type":"address"},{"name":"charityAccount","type":"address"},{"name":"name","type":"string"},{"name":"desc","type":"string"},{"name":"timestamp","type":"uint256"},{"name":"state","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[{"name":"_pos","type":"uint256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"payToCharity","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_charityAccount","type":"address"},{"name":"_name","type":"string"},{"name":"_desc","type":"string"}],"name":"addCharity","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"address"},{"name":"_numPoints","type":"uint256"}],"name":"addPoints","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_pos","type":"uint256"}],"name":"blacklistCharity","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_exchange","type":"address"}],"name":"setExchange","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCurrentState","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"}],
+          "42": {
+            "createdBlock": 0,
+            "address": "0xeC147CC1Ee413E505e430089Ec3a1FAB089f305D"
+          },
+          "1": {
+            "createdBlock": 0,
+            "address": "0xeC147CC1Ee413E505e430089Ec3a1FAB089f305D"
+          }
+    }
+      
+}
