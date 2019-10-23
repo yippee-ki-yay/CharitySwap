@@ -133,6 +133,8 @@ contract CharityDao {
         exchange = _exchange;
     }
 
+
+
     // TODO: double check this
     function getCurrentState() public view returns (ContractState) {
         uint endOfActivePeriod = startOfRoundTimestamp + ACTIVE_PERIOD;
@@ -158,6 +160,10 @@ contract CharityDao {
         ERC20 token = ERC20(KNC_ADDRESS);
 
         uint kncAmount = ERC20(KNC_ADDRESS).balanceOf(address(this));
+
+        if (kncAmount == 0) {
+            return;
+        }
         
         KyberNetworkProxyInterface _kyberNetworkProxy = KyberNetworkProxyInterface(KYBER_INTERFACE);
         

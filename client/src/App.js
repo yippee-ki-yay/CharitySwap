@@ -37,6 +37,8 @@ class App extends Component {
 
       const res = await getDaoStatus(charityDao);
 
+      console.log(res);
+
       this.setState({
         web3,
         account: accounts[0],

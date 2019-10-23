@@ -29,7 +29,7 @@ contract CharitySwap {
         
     }
 
-    function swapTokenToToken (address _srcAddress, address _dstAddress, uint _amount) internal {
+    function swapTokenToToken(address _srcAddress, address _dstAddress, uint _amount) internal {
         uint minRate;
         ERC20 srcToken = ERC20(_srcAddress);
         ERC20 dstToken = ERC20(_dstAddress);
