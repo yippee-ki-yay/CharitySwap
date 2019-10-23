@@ -18,11 +18,12 @@
  *
  */
 
-// const HDWalletProvider = require('truffle-hdwallet-provider');
-// const infuraKey = "fj4jll3k.....";
-//
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+
+ 
+const dotenv           = require('dotenv').config();
+const HDWalletProvider = require('truffle-hdwallet-provider');
+
+const mnemonic = process.env.ETHEREUM_ACCOUNT_MNEMONIC;
 
 module.exports = {
   /**
@@ -47,6 +48,15 @@ module.exports = {
     //  port: 8545,            // Standard Ethereum port (default: none)
     //  network_id: "*",       // Any network (default: none)
     // },
+
+    kovan: {
+      provider: function() {
+          return new HDWalletProvider(mnemonic, process.env.KOVAN_INFURA_ENDPOINT, 0, 15);
+      },
+      network_id: '42',
+      gasPrice: 3000000000,
+      skipDryRun: true,
+  },
 
     // Another network with more advanced options...
     // advanced: {

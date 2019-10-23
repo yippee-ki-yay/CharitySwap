@@ -129,7 +129,7 @@ contract CharityDao {
     }
 
     function setExchange(address _exchange) public onlyOwner {
-        require(_exchange == address(0));
+        require(exchange == address(0));
         exchange = _exchange;
     }
 
