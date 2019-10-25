@@ -23,16 +23,17 @@ body {
   color: red;
 }
 
-.exchange-page {
-  input, select, .price-estimate {
+.sidebar-wrapper {
+  a {
+    color: white;
     font-size: 14px;
-    line-height: 40px;
-    height: 40px;
-    box-sizing: border-box;
-    border-radius: 3px;
-    padding: 0 10px;
+    &:hover {
+      text-decoration: underline;
+    }
   }
-  .glyphicon-arrow-right {
-    line-height: 40px;
-  }
+}
+
+button {
+  font-size: 14px !important;
+  font-weight: bold !important;
 }

@@ -1807,8 +1807,9 @@ fieldset:disabled a.btn {
   .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
   .show > .btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #4540f7;
-    border-color: #3a34f6; }
+    opacity: .8;
+    background-color: var(--primary);
+    border-color: var(--primary); }
     .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
     .show > .btn-primary.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(117, 113, 249, 0.5); }
@@ -11319,7 +11320,7 @@ table.dataTable thead .sorting::after {
   margin-bottom: 30px;
   border: 0px;
   border-radius: 0.625rem;
-  box-shadow: 6px 11px 41px -28px #a99de7; }
+  box-shadow: 0 5px 20px -10px #a99de7; }
   .card-title {
     font-size: 18px;
     font-weight: 500;

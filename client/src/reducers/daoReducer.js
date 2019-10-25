@@ -14,6 +14,12 @@ export default (state = INITIAL_STATE, action) => {
         charities: payload.charities,
       };
 
+    case 'CHARITIES':
+      return {
+        ...state,
+        charities: payload.charities,
+      };
+
     default:
       return state;
   }
