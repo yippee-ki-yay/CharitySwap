@@ -1,0 +1,38 @@
+body {
+  background-color: white;
+}
+
+.heading {
+  margin-bottom: 30px;
+}
+
+.main-container {
+  margin-top: 50px;
+}
+
+.text-small {
+  font-size: 15px;
+}
+
+.info-item {
+  margin-right: 25px;
+  font-size: 25px;
+}
+
+.bad-row {
+  color: red;
+}
+
+.exchange-page {
+  input, select, .price-estimate {
+    font-size: 14px;
+    line-height: 30px;
+    height: 40px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 0 10px;
+  }
+  .glyphicon-arrow-right {
+    line-height: 40px;
+  }
+}
