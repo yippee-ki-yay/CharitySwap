@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 import "./helpers/ERC20.sol";
 import "./helpers/KyberNetworkProxyInterface.sol";
@@ -35,6 +36,7 @@ contract CharityDao {
         string desc;
         uint timestamp;
         CharityState state;
+        uint arrPos;
     }
 
     uint public currRound;
@@ -108,7 +110,8 @@ contract CharityDao {
             name: _name,
             desc: _desc,
             timestamp: now,
-            state: CharityState.UNDER_REVIEW
+            state: CharityState.UNDER_REVIEW,
+            arrPos: charities.length
         }));
 
         charityExists[_charityAccount] = true;
@@ -133,6 +136,9 @@ contract CharityDao {
         exchange = _exchange;
     }
 
+    function getCharities() view public returns (Charity[] memory) {
+        return charities;
+    }
 
 
     // TODO: double check this

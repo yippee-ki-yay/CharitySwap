@@ -17,7 +17,13 @@ export const getDaoStatus = async (charityDao) => {
 };
 
 export const getCharities = async (charityDao) => {
+    try {
+        const charities = await charityDao.methods.getCharities().call();
 
+        return charities;
+    } catch(err) {
+        console.log(err);
+    }
 };
 
 export const getCurrDonationAmount = async (charityDao) => {
@@ -36,10 +42,20 @@ export const getVotingPower = async (charityDao, user) => {
 
 };
 
-export const vote = async (charityDao, charity) => {
+export const vote = async (charityDao, charity, sender) => {
+    try {
+        await charityDao.methods.vote(charity.arrPos).send({ account: sender });
 
+    } catch(err) {
+        console.log(err);
+    }
 };
 
-export const addCharity = async (charityDao, charityData) => {
+export const addCharity = async (charityDao, charityAcc, name, desc, sender) => {
+    try {
+        await charityDao.methods.addCharity(charityAcc, name, desc).send({ account: sender });
 
+    } catch(err) {
+        console.log(err);
+    }
 };

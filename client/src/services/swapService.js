@@ -7,3 +7,13 @@ export const exchangeTokens = async (exchange, srcToken, dstToken, amount, sende
         console.log(err);
     }
 };
+
+export const getPrice = async (exchange, srcToken, dstToken, amount) => {
+    try {
+        const price = await exchange.methods.getExpectedRate(srcToken, dstToken, amount).call();
+
+        return price;
+    } catch(err) {
+        console.log(err);
+    }
+};
