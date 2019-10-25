@@ -12,7 +12,6 @@ import { getDaoStatus } from './services/daoService.js';
 import { CharityDao, CharitySwap } from './utils/config.json';
 
 class App extends Component {
-
   constructor(man) {
     super(man);
 
@@ -25,6 +24,7 @@ class App extends Component {
       to: 'DAI',
       amount: '',
       price: '0',
+      charityTheme: {},
     };
 
     this.estimatePrice = this.estimatePrice.bind(this);
@@ -32,6 +32,15 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
+    const charities = [
+      { description: 'Help fight climate change with every crypto swap. ', color: '#41bb78' },
+      { description: 'Help education in Ukraine with every crypto swap. ', color: '#36A4E1' },
+      { description: 'Help deliver vaccines to Congo with every crypto swap. ', color: '#DC6700' },
+      { description: 'Help deliver clean water to Madagascar with every crypto swap. ', color: '#B43442' },
+    ];
+    this.setState({
+      charityTheme: charities[Math.floor(Math.random() * charities.length)]
+    });
     try {
       const web3 = await getWeb3();
 
@@ -83,7 +92,7 @@ class App extends Component {
   }
 
   render() {
-    const { from, to, price, amount } = this.state;
+    const { from, to, price, amount, charityTheme } = this.state;
 
     return (
       <div className="content-body exchange-page">
@@ -91,11 +100,18 @@ class App extends Component {
 
           <div className="row heading">
             <h1>Charity Swap</h1>
-            <h3>Help fight climate change with every crypto swap. </h3>
+            <h3>{charityTheme.description}</h3>
           </div>
 
-          <div className="row">
+          <style>
+            {`
+              :root {
+                --primary: ${charityTheme.color};
+              }
+            `}
+          </style>
 
+          <div className="row">
             <div className="col-lg-9">
               <div className="card">
                 <div className="card-body">
@@ -170,8 +186,7 @@ class App extends Component {
                     <div className="d-inline-block">
                       <h2 className="text-white">3,245.34$</h2>
                     </div>
-                    <span className="float-right display-5 opacity-5"><i
-                      className="fa fa-money"></i></span>
+                    <span className="float-right display-5 opacity-5"><i className="fa fa-money" /></span>
                   </div>
                 </div>
               </div>
@@ -183,21 +198,19 @@ class App extends Component {
                     <div className="d-inline-block">
                       <h2 className="text-white">28.345$</h2>
                     </div>
-                    <span className="float-right display-5 opacity-5"><i
-                      className="fa fa-heart"></i></span>
+                    <span className="float-right display-5 opacity-5"><i className="fa fa-heart" /></span>
                   </div>
                 </div>
               </div>
 
               <div className="row">
-                <div className="card gradient-4">
+                <div className="card gradient-2">
                   <div className="card-body">
                     <h3 className="card-title text-white">Your donations:</h3>
                     <div className="d-inline-block">
                       <h2 className="text-white">0.03$</h2>
                     </div>
-                    <span className="float-right display-5 opacity-5"><i
-                      className="fa fa-users"></i></span>
+                    <span className="float-right display-5 opacity-5"><i className="fa fa-users" /></span>
                   </div>
                 </div>
               </div>
