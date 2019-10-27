@@ -4,7 +4,6 @@ pragma experimental ABIEncoderV2;
 import "./helpers/ERC20.sol";
 import "./helpers/KyberNetworkProxyInterface.sol";
 
-// TODO: SafeMath
 contract CharityDao {
 
     // address constant KYBER_INTERFACE = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755;
@@ -42,10 +41,13 @@ contract CharityDao {
     uint public currRound;
     uint public startOfRoundTimestamp;
 
+    uint public totalDonated;
+
     Charity[] public charities;
     mapping(address => bool) public charityExists;
 
     mapping(address => uint) public points;
+    mapping(address => uint) public totalExchanged;
 
     mapping(uint => mapping(address => uint)) public indexOfVotesPerRound;
     mapping(uint => address[]) public charitiesInARound;
@@ -95,7 +97,10 @@ contract CharityDao {
         address charityAddr = _getWinner();
         address payable payableCharity = address(uint160(charityAddr));
 
-        payableCharity.transfer(address(this).balance);
+        uint contractBalance = address(this).balance;
+
+        totalDonated += contractBalance;
+        payableCharity.transfer(contractBalance);
 
         _newRound();
     }
@@ -120,6 +125,7 @@ contract CharityDao {
     // Exchange only functions
     function addPoints(address _user, uint _numPoints) public onlyExchange {
         points[_user] += _numPoints;
+        totalExchanged[_user] += _numPoints;
     }
     
     // Admin functions

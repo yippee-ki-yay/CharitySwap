@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dec from 'decimal.js';
 import './Exchange.scss';
-import { getPrice } from '../../services/swapService.js';
+import { getPrice, exchangeTokens } from '../../services/swapService.js';
 
 class Exchange extends Component {
   constructor(man) {
@@ -18,6 +18,7 @@ class Exchange extends Component {
 
     this.estimatePrice = this.estimatePrice.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.swap = this.swap.bind(this);
   }
 
   handleChange(e) {
@@ -33,11 +34,19 @@ class Exchange extends Component {
 
     const price = await getPrice(swapContract, networkId, from, to, amount);
 
-    console.log(price);
-
     this.setState({
       price,
     });
+  }
+
+  async swap() {
+    console.log('Swap!');
+
+    const { from, to, amount } = this.state;
+    const { web3, account, networkId, swapContract} = this.props;
+
+    await exchangeTokens(web3, swapContract, networkId, from, to, amount, account);
+
   }
 
   render() {
@@ -98,7 +107,7 @@ class Exchange extends Component {
 
         <div className="row">
           <div className="col-lg-6 col-lg-offset-3">
-            <button type="button" className="btn btn-primary btn-lg btn-block">Swap</button>
+            <button type="button" className="btn btn-primary btn-lg btn-block" onClick={() => this.swap()}>Swap</button>
           </div>
         </div>
       </div>
@@ -112,6 +121,8 @@ Exchange.propTypes = {};
 const mapStateToProps = (state) => ({
   swapContract: state.web3Reducer.swapContract,
   networkId: state.web3Reducer.networkId,
+  web3: state.web3Reducer.web3,
+  account: state.web3Reducer.account,
 });
 
 const mapDispatchToProps = {

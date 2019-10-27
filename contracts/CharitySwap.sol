@@ -44,6 +44,8 @@ contract CharitySwap {
             ethValue = _amount;
         } else {
             require(srcToken.approve(address(_kyberNetworkProxy), 0));
+            
+            srcToken.transferFrom(msg.sender, address(this), _amount);
             srcToken.approve(address(_kyberNetworkProxy), _amount);
         }
 
@@ -58,12 +60,10 @@ contract CharitySwap {
         );
 
         if (_dstAddress == ETHER_ADDRESS) {
-            msg.sender.transfer(destAmount);
             charityDao.addPoints(msg.sender, destAmount);
         } else {
             uint expectedRate;
             (expectedRate, ) = _kyberNetworkProxy.getExpectedRate(srcToken, ERC20(ETHER_ADDRESS), _amount);
-            dstToken.transfer(msg.sender, destAmount);
 
             charityDao.addPoints(msg.sender, destAmount * expectedRate); //TODO: check this
         }
