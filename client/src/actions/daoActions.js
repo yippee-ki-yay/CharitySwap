@@ -18,3 +18,10 @@ export const getCharities = () => async (dispatch) => {
     }
   });
 };
+
+export const setDaoContract = (contract) => async (dispatch) => {
+  dispatch({
+    type: 'SET_DAO_CONTRACT',
+    payload: contract
+  });
+};

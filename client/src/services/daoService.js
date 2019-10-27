@@ -38,8 +38,15 @@ export const getUserDonationAmount = async (charityDao, user) => {
 
 };
 
-export const getVotingPower = async (charityDao, user) => {
+export const getVotingPower = async (charityDao, userAddr) => {
+    try {
+        const votingPower = await charityDao.methods.points(userAddr).call();
 
+        return votingPower;
+
+    } catch(err) {
+        console.log(err);
+    }
 };
 
 export const vote = async (charityDao, charity, sender) => {

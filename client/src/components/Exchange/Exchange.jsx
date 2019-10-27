@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Dec from 'decimal.js';
 import './Exchange.scss';
+import { getPrice } from '../../services/swapService.js';
 
 class Exchange extends Component {
   constructor(man) {
@@ -26,10 +28,16 @@ class Exchange extends Component {
   }
 
   async estimatePrice() {
-    await new Promise(r => setTimeout(r, 1000));
+    const { from, to, amount } = this.state;
+    const { networkId, swapContract} = this.props;
+
+    const price = await getPrice(swapContract, networkId, from, to, amount);
+
+    console.log(price);
+
     this.setState({
-      price: Math.random() * 100
-    })
+      price,
+    });
   }
 
   render() {
@@ -100,4 +108,13 @@ class Exchange extends Component {
 
 Exchange.propTypes = {};
 
-export default Exchange;
+
+const mapStateToProps = (state) => ({
+  swapContract: state.web3Reducer.swapContract,
+  networkId: state.web3Reducer.networkId,
+});
+
+const mapDispatchToProps = {
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Exchange);

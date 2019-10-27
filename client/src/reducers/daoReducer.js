@@ -1,7 +1,6 @@
 const INITIAL_STATE = {
   charities: [],
   totalDonations: '0',
-
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -19,6 +18,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         charities: payload.charities,
       };
+
 
     default:
       return state;

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Switch, HashRouter, Route, Link } from 'react-router-dom'
 import getWeb3 from './utils/getWeb3';
 import Exchange from './components/Exchange/Exchange';
 import Charities from './components/Charities/Charities';
+
+import { setWeb3Data } from './actions/web3Actions';
 
 import './css/bootstrap.min.css';
 import './css/style.css';
@@ -46,6 +49,8 @@ class App extends Component {
 
       const charitySwap = new web3.eth.Contract(CharitySwap.abi, CharitySwap.networks[networkId].address);
       const charityDao = new web3.eth.Contract(CharityDao.abi, CharityDao.networks[networkId].address);
+
+      this.props.setWeb3Data(web3, accounts[0], networkId, charityDao, charitySwap);
 
       const res = await getDaoStatus(charityDao);
 
@@ -159,4 +164,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = {
+  setWeb3Data,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
