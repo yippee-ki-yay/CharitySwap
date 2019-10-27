@@ -4,7 +4,7 @@
         "networks": {
             "42": {
                 "createdBlock": 0,
-                "address": "0xb39e3d0ec89033a7e6130f46df7984eec4f33c22"
+                "address": "0x99d9725d4801a24a710404110794dc4d95f5ebcf"
               },
               "1": {
                 "createdBlock": 0,
@@ -17,7 +17,7 @@
         "networks": {
             "42": {
                 "createdBlock": 0,
-                "address": "0x993326e39a63b57286901be72b11e5ffcc32b566"
+                "address": "0x6e479813a12e9e6203664d0c871d63ec66d52534"
             },
             "1": {
                 "createdBlock": 0,

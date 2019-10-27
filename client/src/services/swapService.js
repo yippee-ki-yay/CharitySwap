@@ -36,6 +36,8 @@ export const getPrice = async (web3, exchange, networkId, srcToken, dstToken, am
 
         const price = await exchange.methods.getExpectedRate(srcAddress, dstAddress, convertedAmount).call();
 
+        console.log(price[0]);
+
         return price[0] / 1e18;
     } catch(err) {
         console.log(err);

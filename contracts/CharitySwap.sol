@@ -1,10 +1,11 @@
 pragma solidity ^0.5.0;
 
 import "./helpers/ERC20.sol";
+import "./helpers/DSMath.sol";
 import "./helpers/KyberNetworkProxyInterface.sol";
 import "./CharityDao.sol";
 
-contract CharitySwap {
+contract CharitySwap is DSMath {
 
     // Kovan
     address constant KYBER_INTERFACE = 0x692f391bCc85cefCe8C237C01e1f636BbD70EA4D;
@@ -44,7 +45,7 @@ contract CharitySwap {
             ethValue = _amount;
         } else {
             require(srcToken.approve(address(_kyberNetworkProxy), 0));
-            
+
             srcToken.transferFrom(msg.sender, address(this), _amount);
             srcToken.approve(address(_kyberNetworkProxy), _amount);
         }
@@ -63,9 +64,9 @@ contract CharitySwap {
             charityDao.addPoints(msg.sender, destAmount);
         } else {
             uint expectedRate;
-            (expectedRate, ) = _kyberNetworkProxy.getExpectedRate(srcToken, ERC20(ETHER_ADDRESS), _amount);
+            (expectedRate, ) = _kyberNetworkProxy.getExpectedRate(dstToken, ERC20(ETHER_ADDRESS), _amount);
 
-            charityDao.addPoints(msg.sender, destAmount * expectedRate); //TODO: check this
+            charityDao.addPoints(msg.sender, wmul(destAmount, expectedRate));
         }
     }
 
