@@ -109,7 +109,7 @@ class Exchange extends Component {
           </div>
 
           <div className='col-lg-5'>
-            <div className="price-estimate">
+            <div className="price-estimate price">
               {Dec(parseFloat(amount) || 0).times(price || 0).toDecimalPlaces(2).toString()} {to}
             </div>
           </div>

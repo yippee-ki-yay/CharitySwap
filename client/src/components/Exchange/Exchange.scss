@@ -1,6 +1,6 @@
 .exchange-page {
   input, select, .price-estimate {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 40px;
     height: 40px;
     box-sizing: border-box;
@@ -9,5 +9,10 @@
   }
   .glyphicon-arrow-right {
     line-height: 40px;
+  }
+
+  .price {
+    font-size: 20px;
+    font-weight: bold;
   }
 }

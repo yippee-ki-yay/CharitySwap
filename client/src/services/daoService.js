@@ -54,7 +54,7 @@ export const getTotalDonationAmount = async (charityDao) => {
 
         console.log(parseFloat(totalDonations));
 
-        return parseFloat(totalDonations);
+        return parseFloat(totalDonations) / 1e18;
     } catch (err) {
         console.log(err);
     }
@@ -74,16 +74,16 @@ export const getVotingPower = async (charityDao, userAddr) => {
     try {
         const votingPower = await charityDao.methods.points(userAddr).call();
 
-        return votingPower;
+        return votingPower / 1e18;
 
     } catch(err) {
         console.log(err);
     }
 };
 
-export const vote = async (charityDao, charity, sender) => {
+export const vote = async (charityDao, arrPos, sender) => {
     try {
-        await charityDao.methods.vote(charity.arrPos).send({ from: sender });
+        await charityDao.methods.vote(arrPos).send({ from: sender });
 
     } catch(err) {
         console.log(err);

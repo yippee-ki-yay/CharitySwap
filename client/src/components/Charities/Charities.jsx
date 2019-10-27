@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Charities.scss';
-import { getCharities } from '../../actions/daoActions';
+import { getCharities, getVotingPowerForUser, callVote } from '../../actions/daoActions';
 
 class Charities extends Component {
   constructor(man) {
     super(man);
 
     this.state = {};
+
+    this.vote = this.vote.bind(this);
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.props.getCharities();
+      this.props.getVotingPowerForUser();
     }, 1000);
   }
 
+  async vote(pos) {
+    console.log('Vote!');
+
+    this.props.callVote(pos);
+  }
+
   render() {
+
+    console.log(this.props.userVotingPower);
     return (
       <div className="charities-page">
         <p>
@@ -25,7 +36,7 @@ class Charities extends Component {
         </p>
 
         <p>
-          Your voting power: <b>245</b>
+          Your voting power: <b>{this.props.userVotingPower}</b>
         </p>
 
         <div className="charity-list">
@@ -39,7 +50,7 @@ class Charities extends Component {
                     {/* <h4>Current month score: {charity.score}</h4> */}
                   </div>
                   <div className="col-lg-2">
-                    <button type="button" className="btn btn-primary">Vote</button>
+                    <button type="button" className="btn btn-primary" onClick={() => this.vote(charity.arrPos)}>Vote</button>
                   </div>
                 </div>
               </div>
@@ -55,10 +66,13 @@ Charities.propTypes = {};
 
 const mapStateToProps = (state) => ({
   charities: state.dao.charities,
+  userVotingPower: state.dao.userVotingPower,
 });
 
 const mapDispatchToProps = {
   getCharities,
+  getVotingPowerForUser,
+  callVote,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Charities);

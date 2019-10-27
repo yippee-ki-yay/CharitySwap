@@ -50,6 +50,10 @@ class App extends Component {
 
       const networkId = await web3.eth.net.getId();
 
+      if (networkId !== 42) {
+        alert('Please switch over to Kovan testnet');
+      }
+
       const charitySwap = new web3.eth.Contract(CharitySwap.abi, CharitySwap.networks[networkId].address);
       const charityDao = new web3.eth.Contract(CharityDao.abi, CharityDao.networks[networkId].address);
 
