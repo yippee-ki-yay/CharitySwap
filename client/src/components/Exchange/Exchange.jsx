@@ -30,9 +30,20 @@ class Exchange extends Component {
 
   async estimatePrice() {
     const { from, to, amount } = this.state;
-    const { networkId, swapContract} = this.props;
+    const { networkId, swapContract, web3 } = this.props;
 
-    const price = await getPrice(swapContract, networkId, from, to, amount);
+    let a = amount.toString();
+
+    if (a.length > 0) {
+      if (a[a.length - 1] === '.') {
+        this.setState({
+          price: 0,
+        });
+        return;
+      }
+    }
+
+    const price = await getPrice(web3, swapContract, networkId, from, to, amount);
 
     this.setState({
       price,

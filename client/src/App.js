@@ -12,7 +12,7 @@ import './css/style.css';
 
 import './App.scss';
 
-import { getDaoStatus } from './services/daoService.js';
+import { getTotalDonationAmount, getUserDonationAmount, getCurrDonationAmount } from './services/daoService.js';
 
 import { CharityDao, CharitySwap } from './utils/config.json';
 
@@ -26,6 +26,9 @@ class App extends Component {
       charitySwap: null,
       charityDao: null,
       charityTheme: {},
+      totalDonation: 0,
+      userDonation: 0,
+      monthlyDonation: 0,
     };
   }
 
@@ -52,16 +55,21 @@ class App extends Component {
 
       this.props.setWeb3Data(web3, accounts[0], networkId, charityDao, charitySwap);
 
-      const res = await getDaoStatus(charityDao);
+      const totalDonation = await getTotalDonationAmount(charityDao);
 
-      console.log(res);
+      const userDonation = await getUserDonationAmount(charityDao, accounts[0]);
+
+      const monthlyDonation = await getCurrDonationAmount(web3, networkId, CharityDao.networks[networkId].address, charitySwap);
 
       this.setState({
         web3,
         account: accounts[0],
         networkId,
         charityDao,
-        charitySwap
+        charitySwap,
+        totalDonation,
+        userDonation,
+        monthlyDonation
       }, this.fetchEvents);
 
     } catch (error) {
@@ -78,7 +86,9 @@ class App extends Component {
   };
 
   render() {
-    const { charityTheme } = this.state;
+    const { charityTheme, totalDonation, userDonation, monthlyDonation } = this.state;
+
+    console.log(monthlyDonation);
 
     return (
       <HashRouter>
@@ -118,9 +128,9 @@ class App extends Component {
                   <div className="row">
                     <div className="card gradient-1">
                       <div className="card-body">
-                        <h3 className="card-title text-white">Total donated to 10 charities</h3>
+                        <h3 className="card-title text-white">Total donated </h3>
                         <div className="d-inline-block">
-                          <h2 className="text-white">3,245.34$</h2>
+                          <h2 className="text-white">{totalDonation}$</h2>
                           <Link to="/charities">Browse charities</Link>
                         </div>
                         <span className="float-right display-5 opacity-5"><i className="fa fa-money" /></span>
@@ -133,7 +143,7 @@ class App extends Component {
                       <div className="card-body">
                         <h3 className="card-title text-white">This month:</h3>
                         <div className="d-inline-block">
-                          <h2 className="text-white">28.345$</h2>
+                          <h2 className="text-white">{monthlyDonation}$</h2>
                         </div>
                         <span className="float-right display-5 opacity-5"><i className="fa fa-users" /></span>
                       </div>
@@ -145,7 +155,7 @@ class App extends Component {
                       <div className="card-body">
                         <h3 className="card-title text-white">Your donations:</h3>
                         <div className="d-inline-block">
-                          <h2 className="text-white">0.03$</h2>
+                          <h2 className="text-white">{userDonation.toFixed(6)}$</h2>
                         </div>
                         <span className="float-right display-5 opacity-5"><i className="fa fa-heart" /></span>
                       </div>

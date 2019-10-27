@@ -11,7 +11,9 @@ class Charities extends Component {
   }
 
   componentDidMount() {
-    this.props.getCharities()
+    setTimeout(() => {
+      this.props.getCharities();
+    }, 1000);
   }
 
   render() {
@@ -29,12 +31,12 @@ class Charities extends Component {
         <div className="charity-list">
           {
             this.props.charities.map((charity) => (
-              <div className="charity-item" key={charity.id}>
+              <div className="charity-item" key={charity.arrPos}>
                 <h2>{charity.name}</h2>
                 <div className="row">
                   <div className="col-lg-10">
-                    <h3>{charity.description}</h3>
-                    <h4>Current month score: {charity.score}</h4>
+                    <h3>{charity.desc}</h3>
+                    {/* <h4>Current month score: {charity.score}</h4> */}
                   </div>
                   <div className="col-lg-2">
                     <button type="button" className="btn btn-primary">Vote</button>

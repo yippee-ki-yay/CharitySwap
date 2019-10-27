@@ -27,12 +27,14 @@ export const exchangeTokens = async (web3, exchange, networkId, srcToken, dstTok
     }
 };
 
-export const getPrice = async (exchange, networkId, srcToken, dstToken, amount) => {
+export const getPrice = async (web3, exchange, networkId, srcToken, dstToken, amount) => {
     try {
         const srcAddress = getTokenAddress(srcToken, networkId);
         const dstAddress = getTokenAddress(dstToken, networkId);
 
-        const price = await exchange.methods.getExpectedRate(srcAddress, dstAddress, amount).call();
+        const convertedAmount = web3.utils.toWei(amount, "ether");
+
+        const price = await exchange.methods.getExpectedRate(srcAddress, dstAddress, convertedAmount).call();
 
         return price[0] / 1e18;
     } catch(err) {
